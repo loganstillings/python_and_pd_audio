@@ -1,0 +1,7 @@
+Example 3 description
+
+This video shows the code working, succesfully performing two way communication
+between PD and python. The process used was running the pure data patch, and initiating
+the python script. Both the patch and the python script were left unchanged from
+the provided examples. The only 4 notes were selected for the quantization of the midi
+notes.

@@ -1,0 +1,7 @@
+Example 1 description
+
+This video shows the code working, succesfully sending notes from python
+to PD. The process used was running the pure data patch, initiating the 
+python script, and using a MIDI channel (using a piano instrument) listening for
+MIDI input from PD. The python code was unchanged from the original example
+and only notes on the C major scale were selected in the PD quantizer.

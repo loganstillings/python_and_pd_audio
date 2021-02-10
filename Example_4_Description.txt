@@ -1,0 +1,7 @@
+Example 4 description
+
+This video shows the code working, succesfully performing two way communication
+between PD and python. The process used was running the pure data patch, and initiating
+the python script. A few parameters were changed in order to receive the output. 
+Namely, I changed the parameter for the onset difference range to be between 100 and 1000 ms.
+The notes selected for quantization this time were notes of the C dorian mode.

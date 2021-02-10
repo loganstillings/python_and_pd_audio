@@ -1,0 +1,9 @@
+Example 2 description
+
+This video shows the code working, succesfully sending clock messages from PD
+to Python. The process used was running the pure data patch, initiating the 
+python script. Both the patch and the python script were left unchanged from
+the provided examples, but one minor change was the port number. When ending
+the script with a keyboard interrupt (ctrl-z on windows) the port remained
+in use, so I incremented the port values instead of ending the threading
+process for the original port.
