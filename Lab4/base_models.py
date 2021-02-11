@@ -199,16 +199,16 @@ class NoteGenerator(threading.Thread):
 
             start_time = datetime.now() + \
                          timedelta(seconds=self.generation_configs["grace_time_before_playback"])
-
+            duration = 0
             for i in range(self.generation_configs["sequence_length"]):
 
-                # print(f"Generating {i}th note!!!!")
+                print(f"Generating {i}th note!!!!")
 
                 velocity = int(random.randrange(*self.generation_configs["velocity_range"]))
+                previous_duration = duration 
                 duration = self.get_random_quantized_duration()
-                pitch = int(random.randrange(*self.generation_configs["pitch_range"]))
-
-                start_time = self.get_random_quantized_onset(start_time)
+                pitch = self.get_random_quantized_pitch()
+                start_time = self.get_random_quantized_onset(start_time, previous_duration)
 
                 note = (start_time, pitch, velocity, duration)
 
@@ -233,16 +233,47 @@ class NoteGenerator(threading.Thread):
         sixteenth_note_duration = 60000 / (4*self.bpm) # duration of sixteenth note in ms
         random_duration = int(random.randrange(*self.generation_configs["duration_range"]))
         quantized_duration = sixteenth_note_duration * round(random_duration/sixteenth_note_duration)
-        # print(random_duration, quantized_duration)
+        print('quantized duration: ', quantized_duration)
         return quantized_duration
 
-    def get_random_quantized_onset(self, start_time):
+    def get_random_quantized_onset(self, start_time, previous_duration):
         # the start time should be within a 32nd note resolution 
         thirty_second_note_duration = 60000 / (8*self.bpm) # duration of 32nd note in ms
         random_onset = int(random.randrange(*self.generation_configs["onset_difference_range"]))
-        quantized_onset = thirty_second_note_duration * round(random_onset/thirty_second_note_duration)
+        quantized_onset = (thirty_second_note_duration * round(random_onset/thirty_second_note_duration))
+        print('quantized onset from previous note: ', quantized_onset)
+        # implementing a previous duration to avoid overlapping notes, keeping the melody monophonic
+        quantized_onset += previous_duration
         start_time = start_time + timedelta(milliseconds=quantized_onset)
         return start_time
+
+    def get_random_quantized_pitch(self):
+        random_pitch = random.randrange(*self.generation_configs["pitch_range"])
+        # Implementing a quanitzation of only C pentatonic (C, D, E, G, A) = (0, 0, 2, 2, 4, 4, 7, 7, 7, 9, 9, 0)
+        pitch_class = random_pitch % 12
+        pitches_classes = {
+            0: 'C',
+            1: 'C#',
+            2: 'D',
+            3: 'D#',
+            4: 'E',
+            5: 'F',
+            6: 'F#',
+            7: 'G',
+            8: 'G#',
+            9: 'A',
+            10: 'A#',
+            11: 'B',
+        }
+        if pitch_class in {6, 11}:
+            # Round up for F#, and B
+            random_pitch += 1
+        elif pitch_class in {1, 3, 5, 8, 10}:
+            # Round down for C#, D#, F, G#, and A#
+            random_pitch -= 1
+        octave_number = (random_pitch // 12) - 1
+        print('MIDI number: ' + str(random_pitch), pitches_classes[random_pitch%12] + str(octave_number))
+        return random_pitch    
 
 
 

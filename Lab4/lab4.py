@@ -76,12 +76,12 @@ if __name__ == '__main__':
                 "generate_thread_Event": generate_thread_Event,
                 "playback_sequence_queue": playback_sequence_queue,
                 "sequence_length": 16,                          # 16
-                "generation_time": .1,                          # The time between generating
-                "pitch_range": (40, 52),                        # pitch range
-                "velocity_range": (78, 80),                     # velocity range (0, 127)
+                "generation_time": 0,                          # The time between generating
+                "pitch_range": (52, 64),                        # pitch range
+                "velocity_range": (50, 80),                     # velocity range (0, 127)
                 "duration_range": (100, 1000),                  # note length based on number ms
-                "onset_difference_range": (100, 500),          # duration between notes
-                "grace_time_before_playback": 2,                # (sec) time to wait before playing sequence
+                "onset_difference_range": (0, 130),              # duration between notes
+                "grace_time_before_playback": 1,                # (sec) time to wait before playing sequence
                 "quit_event": quit_event
             }
 
