@@ -1,0 +1,31 @@
+Lab4 Description
+
+Accompanying this document are:
+the final recorded audio (Lab4_Audio.wav),
+a screen recording of the working code caputring the MIDI (Lab4_Screen_Recording.mp4),
+the patch (Lab4_Patch.pd),
+the script (Lab4_Script.py),
+and the base_models.py
+
+The python code implements quantized note durations to multiples of a 16th note,
+micro timing variations between note onsets (quantized to the nearest 32nd note),
+and a pitch quantizer only selecting notes on the C pentatonic scale.
+3 new functions were added to the base_models file in order to achieve this.
+	1. The get_random_quantized_duration function selects a random number within the
+		provided range and rounds to the nearest 16th note duration. In the case
+		of 120 bpm, which was used in the provided demo, each generated duration
+		is a multiple of 125ms, the value of one 16th note. The duration range 
+		used was 100-1000ms.
+	2. The get_random_quantized_onset function selects a random number within the 
+		provided range and rounds to the nearest 32nd note. This number is then
+		added to the duration and the start time of the previous note, in order
+		to obtain the correct onset. The onset difference range used was 0-130ms,
+		which means after quantization, there could be no gap, a 32nd note, or a 16th
+		note difference between note onset and the previous note offset.
+	3. The get_random_quantized_pitch function selects only notes from the C pentatonic scale
+		(C, D, E, G, A) = (0, 0, 2, 2, 4, 4, 7, 7, 7, 9, 9, 0).
+		this was done by first getting a random pitch from the provided range, using 
+		the modulo operator to determine the pitch class of the random note, and rounding
+		the correct notes to be within the scale. If you watch the provided screen 
+		recording, you'll notice that the pd quantizer shows every note as selected, but
+		only the C pentatonic notes are present due to this pitch quantization step in python.
